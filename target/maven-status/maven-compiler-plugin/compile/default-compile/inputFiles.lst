@@ -1,0 +1,15 @@
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/model/Role.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/service/UserServiceImpl.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/BootApp.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/security/handler/MyAccessDeniedHandler.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/service/RoleServiceImpl.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/repository/UserRepository.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/model/User.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/service/RoleService.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/service/MyUserDetailService.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/controller/MainController.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/security/SecurityConfig.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/repository/RoleRepository.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/controller/AdminController.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/security/handler/LoginSuccessHandler.java
+/home/gennady/Yandex.Disk/Библиотека/proglio/вопросы/reviews/preproject/spring/3.1.2.bootstrap/src/main/java/web/service/UserService.java

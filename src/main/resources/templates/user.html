@@ -1,0 +1,12 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${authUser.getUsername()}"></title>
+</head>
+<body>
+    <p>Hello, <th:block th:text="${authUser.getUsername()}"/>!</p>
+    <a href="/logout">Logout</a>
+</body>
+</html>
