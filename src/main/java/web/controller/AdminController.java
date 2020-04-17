@@ -1,6 +1,7 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,11 +28,12 @@ public class AdminController {
     private BCryptPasswordEncoder bCryptEncoder;
 
     @RequestMapping(value = "admin", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
+    public String printWelcome(@AuthenticationPrincipal User user, ModelMap model) {
         List<User> users = userService.listUsers();
-        User user = new User();
+        User empty = new User();
 
-        model.addAttribute("user", user);
+        model.addAttribute("empty", empty);
+        model.addAttribute("admin", user);
         model.addAttribute("users", users);
 
         return "list";
@@ -39,9 +41,10 @@ public class AdminController {
 
     @RequestMapping(value = "admin/add", method = RequestMethod.POST)
     public ModelAndView saveUser(@ModelAttribute User user, @RequestParam Long role) {
-        ModelAndView model = null;
+        ModelAndView model;
 
-        if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
+        if (user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty()
+            || user.getLastName().isEmpty()) {
             model = new ModelAndView("redirect:/admin/error");
             model.addObject("message", "Enter the name or pass");
         } else {
@@ -80,16 +83,23 @@ public class AdminController {
 
     @RequestMapping(value = "admin/update", method = RequestMethod.POST)
     public ModelAndView updateUser(@ModelAttribute User user, @RequestParam Long role) {
-        ModelAndView model = null;
+        ModelAndView model;
+        User oldUser = (User) userService.getUserById(user.getId());
 
-        if (user.getUsername().isEmpty()) {
-            User userForOldName = (User) userService.getUserById(user.getId());
-            user.setUsername(userForOldName.getUsername());
+        if(user.getFirstName().isEmpty()) {
+            user.setFirstName(oldUser.getFirstName());
+        }
+
+        if(user.getLastName().isEmpty()) {
+            user.setLastName(oldUser.getLastName());
+        }
+
+        if (user.getEmail().isEmpty()) {
+            user.setEmail(oldUser.getEmail());
         }
 
         if(user.getPassword().isEmpty()) {
-            User userForPass = (User) userService.getUserById(user.getId());
-            user.setPassword(userForPass.getPassword());
+            user.setPassword(oldUser.getPassword());
         } else {
             user.setPassword(bCryptEncoder.encode(user.getPassword()));
         }

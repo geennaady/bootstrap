@@ -28,11 +28,6 @@ public class MainController {
 	@Autowired
 	private RoleService roleService;
 
-	@GetMapping(value = "adminx")
-	public String printX() {
-		return "adminx";
-	}
-
 	@GetMapping(value = "/")
 	public String printWelcome(ModelMap model) {
 		List<String> messages = new ArrayList<>();

@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})}
+        name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})}
 )
 public class User implements UserDetails {
     @Id
@@ -20,7 +20,16 @@ public class User implements UserDetails {
     Long id;
 
     @Column
-    String username;
+    String firstName;
+
+    @Column
+    String lastName;
+
+    @Column
+    String email;
+
+    @Column
+    Long age;
 
     @Column
     String password;
@@ -33,15 +42,45 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
+    public User(String firstName, String lastName, String email, Long age, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
         this.password = password;
     }
 
-    public User(Long id, String username, String password) {
+    public User(Long id, String firstName, String lastName, String email, Long age, String password) {
         this.id = id;
-        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.age = age;
         this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Long getAge() {
+        return age;
+    }
+
+    public void setAge(Long age) {
+        this.age = age;
     }
 
     public Long getId() {
@@ -52,8 +91,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Set<Role> getRoles() {
@@ -86,7 +125,11 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() { return username; }
+    public String getUsername() {
+        return email;
+    }
+
+    public String getEmail() { return email; }
 
     @Override
     public boolean isAccountNonExpired() {

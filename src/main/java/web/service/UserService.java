@@ -8,5 +8,5 @@ public interface UserService<T> {
     void updateUser(T user);
     T getUserById(Long id);
     void deleteUser(Long id);
-    T getUserByName(String username);
+    T getUserByEmail(String email);
 }
