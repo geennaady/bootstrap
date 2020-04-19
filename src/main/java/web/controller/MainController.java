@@ -40,13 +40,13 @@ public class MainController {
 	}
 
     @GetMapping(value = "login")
-    public String loginPage(@AuthenticationPrincipal User user) {
+    public String loginPage() {
 		return "login";
     }
 
 	@GetMapping(value = "registration")
-	public String registration(ModelMap model) {
-		model.addAttribute("userForm", new User());
+	public String registration(ModelMap model, User user) {
+		model.addAttribute("userForm", user);
 
 		return "registration";
 	}

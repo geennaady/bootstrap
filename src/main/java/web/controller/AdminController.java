@@ -5,10 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import web.model.User;
 import web.service.RoleService;
@@ -27,19 +24,18 @@ public class AdminController {
     @Autowired
     private BCryptPasswordEncoder bCryptEncoder;
 
-    @RequestMapping(value = "admin", method = RequestMethod.GET)
-    public String printWelcome(@AuthenticationPrincipal User user, ModelMap model) {
+    @GetMapping(value = "admin")
+    public String printWelcome(@AuthenticationPrincipal User admin, ModelMap model) {
         List<User> users = userService.listUsers();
-        User empty = new User();
 
-        model.addAttribute("empty", empty);
-        model.addAttribute("admin", user);
+        model.addAttribute("admin", admin);
+        model.addAttribute("user", new User());
         model.addAttribute("users", users);
 
         return "list";
     }
 
-    @RequestMapping(value = "admin/add", method = RequestMethod.POST)
+    @PostMapping(value = "admin/add")
     public ModelAndView saveUser(@ModelAttribute User user, @RequestParam Long role) {
         ModelAndView model;
 
@@ -62,26 +58,21 @@ public class AdminController {
         return model;
     }
 
-    @RequestMapping(value = "admin/error", method = RequestMethod.GET)
+    @GetMapping(value = "admin/error")
     public String errorHandler(@RequestParam String message, ModelMap model) {
         model.addAttribute("message", message);
 
         return "error";
     }
 
-    @RequestMapping(value = "admin/delete", method = RequestMethod.POST)
+    @PostMapping(value = "admin/delete")
     public ModelAndView deleteUser(@RequestParam Long id) {
         userService.deleteUser(id);
 
         return new ModelAndView("redirect:/admin");
     }
 
-    @RequestMapping(value = "admin/update", method = RequestMethod.GET)
-    public String showUpdate(ModelMap model) {
-        return "update";
-    }
-
-    @RequestMapping(value = "admin/update", method = RequestMethod.POST)
+    @PostMapping(value = "admin/update")
     public ModelAndView updateUser(@ModelAttribute User user, @RequestParam Long role) {
         ModelAndView model;
         User oldUser = (User) userService.getUserById(user.getId());
