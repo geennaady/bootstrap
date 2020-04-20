@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import web.model.User;
 import web.service.RoleService;
 import web.service.UserService;
@@ -21,22 +22,9 @@ import java.util.List;
 @ComponentScan("web")
 @RequestMapping("/")
 public class MainController {
-
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private RoleService roleService;
-
 	@GetMapping(value = "/")
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("I'm Spring MVC-SECURITY application");
-		messages.add("5.2.0 version by sep'19 ");
-		model.addAttribute("messages", messages);
-
-		return "hello";
+	public ModelAndView printWelcome() {
+		return new ModelAndView("redirect:/login");
 	}
 
     @GetMapping(value = "login")
@@ -44,32 +32,7 @@ public class MainController {
 		return "login";
     }
 
-	@GetMapping(value = "registration")
-	public String registration(ModelMap model, User user) {
-		model.addAttribute("userForm", user);
-
-		return "registration";
-	}
-
-	@PostMapping(value = "registration")
-	public String addUser(@ModelAttribute("userForm") User user, BindingResult bindingResult, ModelMap model) {
-
-		if (bindingResult.hasErrors()) {
-			return "registration";
-		}
-
-		try {
-			user.setRoles(roleService.getAuthorityById(2L));
-			userService.addUser(user);
-		} catch (Exception e) {
-			model.addAttribute("message", "That name is already own");
-			return "error";
-		}
-
-		return "redirect:/";
-	}
-
-	@GetMapping(value = "user")
+    @GetMapping(value = "user")
 	public String userPage(@AuthenticationPrincipal User user, ModelMap model) {
 		model.addAttribute("authUser", user);
 		return "user";

@@ -5,12 +5,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import web.model.User;
 import web.service.RoleService;
 import web.service.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -25,24 +27,26 @@ public class AdminController {
     private BCryptPasswordEncoder bCryptEncoder;
 
     @GetMapping(value = "admin")
-    public String printWelcome(@AuthenticationPrincipal User admin, ModelMap model) {
+    public String printWelcome(@RequestParam(required = false) String message, @AuthenticationPrincipal User admin, ModelMap model) {
         List<User> users = userService.listUsers();
 
         model.addAttribute("admin", admin);
         model.addAttribute("user", new User());
         model.addAttribute("users", users);
+        model.addAttribute("message", message);
 
-        return "list";
+        return "admin";
     }
 
     @PostMapping(value = "admin/add")
     public ModelAndView saveUser(@ModelAttribute User user, @RequestParam Long role) {
         ModelAndView model;
 
+
         if (user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getFirstName().isEmpty()
-            || user.getLastName().isEmpty()) {
-            model = new ModelAndView("redirect:/admin/error");
-            model.addObject("message", "Enter the name or pass");
+            || user.getLastName().isEmpty() || user.getAge() == null) {
+            model = new ModelAndView("redirect:/admin");
+            model.addObject("message", "All fields are required!");
         } else {
             try {
                 user.setRoles(roleService.getAuthorityById(role));
@@ -50,19 +54,12 @@ public class AdminController {
                 userService.addUser(user);
                 model = new ModelAndView("redirect:/admin");
             } catch (Exception e) {
-                model = new ModelAndView("redirect:/admin/error");
-                model.addObject("message", "User already exists");
+                model = new ModelAndView("redirect:/admin");
+                model.addObject("message", "Email already exists");
             }
         }
 
         return model;
-    }
-
-    @GetMapping(value = "admin/error")
-    public String errorHandler(@RequestParam String message, ModelMap model) {
-        model.addAttribute("message", message);
-
-        return "error";
     }
 
     @PostMapping(value = "admin/delete")
@@ -73,8 +70,9 @@ public class AdminController {
     }
 
     @PostMapping(value = "admin/update")
-    public ModelAndView updateUser(@ModelAttribute User user, @RequestParam Long role) {
+    public ModelAndView updateUser(@Valid User user, @RequestParam Long role) {
         ModelAndView model;
+
         User oldUser = (User) userService.getUserById(user.getId());
 
         if(user.getFirstName().isEmpty()) {
@@ -83,6 +81,10 @@ public class AdminController {
 
         if(user.getLastName().isEmpty()) {
             user.setLastName(oldUser.getLastName());
+        }
+
+        if(user.getAge() == null) {
+            user.setAge(oldUser.getAge());
         }
 
         if (user.getEmail().isEmpty()) {
@@ -100,8 +102,8 @@ public class AdminController {
             userService.updateUser(user);
             model = new ModelAndView("redirect:/admin");
         } catch (Exception e) {
-            model = new ModelAndView("redirect:/admin/error");
-            model.addObject("message", "Name already exists");
+            model = new ModelAndView("redirect:/admin");
+            model.addObject("message", "Email already exists");
         }
 
         return model;
